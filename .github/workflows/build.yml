@@ -33,10 +33,10 @@ jobs:
 
           CIBW_MANYLINUX_X86_64_IMAGE: manylinux2010
           # gmp already installed on macos
-          CIBW_BEFORE_ALL_MACOS: python setup.py package
+          CIBW_BEFORE_ALL_MACOS: python setup.py package_assemble
           CIBW_BEFORE_ALL_LINUX: >
             yum install -y gmp-devel &&
-            python setup.py package
+            python setup.py package_assemble
             
 
           
