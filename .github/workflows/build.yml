@@ -8,7 +8,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest]
+        os: [ubuntu-18.04]
 
     steps:
       - uses: actions/checkout@v2
@@ -29,10 +29,17 @@ jobs:
           # Skip Python 2.7 and 3.5, 32 bit Linux, and PyPy
           # CIBW_SKIP: cp27-* cp35-* *-manylinux_i686 pp*
           # CIBW_BEFORE_ALL_LINUX: yum install -y tk mesa-libGLU-devel
-          CIBW_BUILD: cp37-macosx_x86_64
-          CIBW_BEFORE_ALL: python setup.py package
+          CIBW_BUILD: cp37-macosx_x86_64 cp38-manylinux_x86_64
+
+          CIBW_MANYLINUX_X86_64_IMAGE: manylinux2010
           # gmp already installed on macos
           CIBW_BEFORE_ALL_MACOS: python setup.py package
+          CIBW_BEFORE_ALL_LINUX: >
+            yum install -y libgmp-devel
+            python setup.py package
+            
+
+          
           # CIBW_BEFORE_BUILD: >            
           #   pip install cython sphinx cypari FXrays &&
           #   pip install https://github.com/3-manifolds/PLink/archive/master.zip &&
