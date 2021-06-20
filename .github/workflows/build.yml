@@ -31,11 +31,11 @@ jobs:
           # CIBW_BEFORE_ALL_LINUX: yum install -y tk mesa-libGLU-devel
           CIBW_BUILD: cp37-macosx_x86_64 cp38-manylinux_x86_64
 
-          CIBW_MANYLINUX_X86_64_IMAGE: manylinux2010
+          CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
           # gmp already installed on macos
           CIBW_BEFORE_ALL_MACOS: python setup.py package_assemble
           CIBW_BEFORE_ALL_LINUX: >
-            yum install -y gmp-devel &&
+            yum install -y gmp-devel zlib-devel bzip2-devel &&
             python setup.py package_assemble
             
 
