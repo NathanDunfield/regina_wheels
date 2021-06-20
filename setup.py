@@ -166,7 +166,7 @@ regina_extension = Extension(
         ] + library_include_dirs(libraries),
     language = 'c++',
     extra_compile_args=['-fpermissive', '-std=c++17']  + platform_extra_compile_args,
-    libraries = ['gmp','gmpxx','m'],
+    libraries = ['gmp','gmpxx','m', 'bz2'],
 
     # Adding bz2 to the libraries gives a command like 
     # g++ .... -lbz2 -lboost_iostreams_regina ...

@@ -44,7 +44,8 @@ jobs:
           #   pip install https://github.com/3-manifolds/snappy_manifolds/archive/master.zip &&
           #   pip install git+https://github.com/3-manifolds/Spherogram
           # CIBW_REPAIR_WHEEL_COMMAND_LINUX: auditwheel repair --strip -w {dest_dir} {wheel}
-          # CIBW_TEST_COMMAND: python -m snappy.test --skip-modern-opengl
+          CIBW_TEST_COMMAND: >
+            python -c "import regina.sageRegina; regina.sageRegina.test.runTests()"
 
       - uses: actions/upload-artifact@v2
         with:
