@@ -36,7 +36,7 @@ jobs:
           CIBW_BEFORE_ALL_LINUX: >
             yum install -y gmp-devel zlib-devel bzip2-devel &&
             python setup.py package_assemble
-          CIBW_REPAIR_WHEEL_COMMAND_LINUX: auditwheel repair --strip -w {dest_dir} {wheel}
+          CIBW_REPAIR_WHEEL_COMMAND_LINUX: auditwheel repair -w {dest_dir} {wheel}
           CIBW_TEST_COMMAND: >
             python -c "import regina.sageRegina; regina.sageRegina.test.runTests()"
 

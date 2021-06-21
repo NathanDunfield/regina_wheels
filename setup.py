@@ -77,6 +77,8 @@ platform_extra_link_args = []
 if sys.platform == 'darwin':
     platform_extra_compile_args = ['-mmacosx-version-min=10.9']
     platform_extra_link_args = ['-liconv']
+elif sys.platform.startswith('linux'):
+    platform_extra_link_args = ['-s']
 
 tokyocabinet_library = {
     'language' : 'c',
