@@ -329,8 +329,8 @@ class package_extras(CompoundCommand):
 
 class package_move_info(SystemCommand):
     system_commands = [
-        'mv sageRegina.egg-info/PKG-INFO .',
-        'rm -rf sageRegina.egg-info'
+        'mv regina.egg-info/PKG-INFO .',
+        'rm -rf regina.egg-info'
         ]
 
 class package_info(CompoundCommand):
@@ -408,14 +408,14 @@ Further documentation about sageRegina is available at the
 """
 
 
-setup(name = 'sageRegina',
+setup(name = 'regina',
       version = version,
       zip_safe = False,
-      description = 'Regina for SageMath',
+      description = 'Regina-Normal',
       long_description = long_description,
       keywords = 'triangulations, topology',
       classifiers = [
-           'Development Status :: 5 - Production/Stable',
+           'Development Status :: 3 - Alpha',
            'Intended Audience :: Science/Research',
            'License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)',
            'Operating System :: POSIX :: Linux',
@@ -426,9 +426,9 @@ setup(name = 'sageRegina',
            'Programming Language :: Cython',
            'Topic :: Scientific/Engineering :: Mathematics',
       ],
-      author = 'Matthias Goerner',
-      author_email = 'enischte@gmail.com',
-      url = 'http://sageRegina.unhyperbolic.org/',
+      author = 'The Regina developers, Marc Culler, Nathan Dunfield, and Matthias Goerner',
+      author_email = 'snappy-help@computop.org',
+      url = 'http://github.com/3-manifolds/regina_wheels',
       license='GPLv2+',
       packages = [
           'regina',

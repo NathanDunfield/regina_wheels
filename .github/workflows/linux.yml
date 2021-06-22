@@ -27,7 +27,7 @@ jobs:
           python -m cibuildwheel --output-dir wheelhouse
         env:
           # Skip Python 2.7 and 3.5, 32 bit Linux, and PyPy
-          CIBW_SKIP: cp27-* cp35-* cp38-* cp39-* *-manylinux_i686 pp*
+          CIBW_SKIP: cp27-* cp35-* *-manylinux_i686 pp*
           # CIBW_BUILD: cp37-macosx_x86_64 cp38-manylinux_x86_64
 
           CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
@@ -38,7 +38,7 @@ jobs:
             python setup.py package_assemble
           CIBW_REPAIR_WHEEL_COMMAND_LINUX: auditwheel repair -w {dest_dir} {wheel}
           CIBW_TEST_COMMAND: >
-            python -c "import regina.sageRegina; regina.sageRegina.test.runTests()"
+            python -m regina.test()
 
       - uses: actions/upload-artifact@v2
         with:

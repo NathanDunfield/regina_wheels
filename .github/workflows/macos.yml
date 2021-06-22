@@ -38,7 +38,7 @@ jobs:
             python setup.py package_assemble
           CIBW_REPAIR_WHEEL_COMMAND_LINUX: auditwheel repair --strip -w {dest_dir} {wheel}
           CIBW_TEST_COMMAND: >
-            python -c "import regina.sageRegina; regina.sageRegina.test.runTests()"
+            python -m regina.test()
 
       - uses: actions/upload-artifact@v2
         with:

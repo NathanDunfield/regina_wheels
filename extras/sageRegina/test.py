@@ -3,6 +3,7 @@ from __future__ import print_function
 #__all__ = ['runTests']
 
 from .. import __dict__ as reginaDict
+from . version import version
 
 import sys
 import os
@@ -95,6 +96,7 @@ def runTest(testName, testFile):
     return failed
 
 def runTests():
+    print("Testing Regina " + version)
     failedTests = []
     
     for testName, testFile in findTests():
@@ -115,5 +117,7 @@ def runTests():
         print("The following %d test(s) failed: %s" % (
                 len(failedTests), ', '.join(failedTests)))
     else:
-        print("All tests passed")
+        print("All tests passed for Regina " + version)
+
+    return not failedTests
 
