@@ -15,6 +15,11 @@ newer) and Linux, but not Windows. To try it out, do::
   python3 -m pip install --user --pre regina
   python3 -m regina.test
 
+On older versions of Linux, e.g. Ubuntu 18.04, you may need to update
+`pip`_ first via::
+
+  python3 -m pip install --user --upgrade pip wheel
+
 For more on using Regina in Python see the `main docs`_.
 
 These binaries are produced and maintained by Marc Culler, Nathan

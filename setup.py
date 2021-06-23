@@ -398,21 +398,13 @@ cmdclass = {
     'package_tar' : package_tar,
     'package' : package}
 
-long_description = """
-sageRegina is a packaging of the triangulation software 
-`regina <https://regina-normal.github.io/>`_  for easy installation in
-`sage <http://www.sagemath.org/>`_.
-
-Further documentation about sageRegina is available at the 
-`main page <http://sageregina.unhyperbolic.org/>`_.
-"""
-
 
 setup(name = 'regina',
       version = version,
       zip_safe = False,
       description = 'Regina-Normal',
-      long_description = long_description,
+      long_description=open('README.rst').read(),
+      long_description_content_type='text/x-rst',
       keywords = 'triangulations, topology',
       classifiers = [
            'Development Status :: 3 - Alpha',
