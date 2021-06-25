@@ -24,7 +24,7 @@ For more on using Regina in Python see the `main docs`_.
 
 These binaries are produced and maintained by Marc Culler, Nathan
 Dunfield, and Matthias Goerner, though of course 99.9% of the code and
-credit is due to the Ben Burton and the other authors of Regina
+credit is due to Ben Burton and the other authors of Regina
 itself. This project evolved out of Goerner's `sageRegina`_
 but works both with and without `SageMath`_. To install and test in
 SageMath do the following in a terminal window::
