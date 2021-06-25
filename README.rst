@@ -12,7 +12,7 @@ The current version is somewhat experimental and is based on a
 pre-release version of Regina; it is offered for macOS (10.14 and
 newer) and Linux, but not Windows. To try it out, do::
 
-  python3 -m pip install --user --pre regina
+  python3 -m pip install --user --pre --only-binary :all: -U regina
   python3 -m regina.test
 
 On older versions of Linux, e.g. Ubuntu 18.04, you may need to update
@@ -27,13 +27,32 @@ Dunfield, and Matthias Goerner, though of course 99.9% of the code and
 credit is due to the Ben Burton and the other authors of Regina
 itself. This project evolved out of Goerner's `sageRegina`_
 but works both with and without `SageMath`_. To install and test in
-SageMath do::
+SageMath do the following in a terminal window::
 
-  sage -pip install --user --pre regina
+  sage -pip install --user --pre --only-binary :all: -U regina
   sage -python -m regina.test
 
-Please report any technical issues on the `tracker`_ devoted to this
-repackaging of Regina.
+One can also do this from **inside** SageMath (including from a
+notebook) by::
+
+  sage: %pip install --user --pre --only-binary :all: -U regina
+  sage: import regina.test; regina.test.runTests()
+
+Please report any technical problems via the `issue tracker`_ on the
+`GitHub site`_ devoted to this repackaging of Regina.
+
+
+Building from source
+--------------------
+
+If the available binaries do not work for you, you can try building
+from source.  You will need have the development versions of the
+libraries gmp, zlib, and bzip2 installed (which should be the case if
+using Sage)::
+
+  python3 -m pip install --user --pre --no-binary :all: -U -v regina
+
+This can easily take an hour or more.
 
 
 License
@@ -51,5 +70,6 @@ Foundation.
 .. _main docs: https://regina-normal.github.io/#docs
 .. _sageRegina: https://sageregina.unhyperbolic.org
 .. _SageMath: https://sagemath.org
-.. _tracker: https://github.com/3-manifolds/regina_wheels
+.. _issue tracker: https://github.com/3-manifolds/regina_wheels/issues
+.. _GitHub site: https://github.com/3-manifolds/regina_wheels/
 .. _GNU General Public License, version 2: https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
