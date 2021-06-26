@@ -346,7 +346,7 @@ class package_assemble(CompoundCommand):
         'package_info'
         ]
 
-version_name = 'sageRegina-%s' % version
+version_name = 'regina-%s' % version
 
 class package_tar(SystemCommand):
     if 'linux' in sys.platform:
@@ -403,6 +403,7 @@ setup(name = 'regina',
       version = version,
       zip_safe = False,
       description = 'Regina-Normal',
+      python_requires = '>=3.6',
       long_description=open('README.rst').read(),
       long_description_content_type='text/x-rst',
       keywords = 'triangulations, topology',
