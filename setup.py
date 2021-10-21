@@ -76,7 +76,7 @@ platform_extra_compile_args = []
 platform_extra_link_args = []
 if sys.platform == 'darwin':
     platform_extra_compile_args = ['-mmacosx-version-min=10.9']
-    platform_extra_link_args = ['-liconv']
+    platform_extra_link_args = ['-Lextlib', '-liconv', '-Wl,-exported_symbols_list,regina_symbols']
 elif sys.platform.startswith('linux'):
     platform_extra_link_args = ['-s']
 
@@ -101,7 +101,7 @@ def libxml_predicate(file_path):
 libxml_library = {
     'language' : 'c',
     'sources' : recursive_glob(libxml_dir, 'c', predicate = libxml_predicate),
-    'include_dirs' : [ libxml_dir + '/include' ],
+    'include_dirs' : [ libxml_dir + '/include', 'extras/libxml' ],
     # Not exactly sure what is going on with that THREAD_ENABLED, but
     # it didn't seem to build without
     'extra_compile_args' : ['-std=gnu99', '-DLIBXML_THREAD_ENABLED=1'] + platform_extra_compile_args
@@ -164,11 +164,14 @@ regina_extension = Extension(
                        predicate = regina_python_predicate)),
     include_dirs = [
             regina_dir + '/engine',
-            regina_dir + '/python'
+            regina_dir + '/python',
+            'extras/regina/engine',
+            'extinclude',
         ] + library_include_dirs(libraries),
     language = 'c++',
     extra_compile_args=['-fpermissive', '-std=c++17']  + platform_extra_compile_args,
     libraries = ['gmp','gmpxx','m', 'bz2'],
+    library_dirs = ['extlib'],
 
     # Adding bz2 to the libraries gives a command like 
     # g++ .... -lbz2 -lboost_iostreams_regina ...

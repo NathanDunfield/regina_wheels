@@ -1,0 +1,5 @@
+This directory should contain symlinks to the gmp header
+files gmp.h and gmpxx.h which match the static libraries
+in the extlib directory.  If you have gmp installed where
+your compiler will automatically find it then these
+symlinks are not needed.

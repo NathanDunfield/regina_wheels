@@ -1,0 +1,5 @@
+This directory should contain symlinks libgmp.a and libgmpxx.a
+which point to the static gmp libraries which you wish to use
+to build the regina wheels.  If you have gmp installed where
+your compiler will automatically find it then these   
+symlinks are not needed.
