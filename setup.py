@@ -282,7 +282,8 @@ class package_fetch_regina(SystemCommand):
 
 class package_checkout_regina(SystemCommand):
     system_commands = [
-        'mv regina_* regina_0000000',
+        'rm -rf regina_0000000',
+        'mv regina_cloned regina_0000000',
         'cd regina_0000000; git reset --hard',
         'cd regina_0000000; git checkout %s' % regina_hash,
         'mv regina_0000000 %s' % regina_dir
