@@ -76,7 +76,7 @@ platform_extra_compile_args = []
 platform_extra_link_args = []
 if sys.platform == 'darwin':
     platform_extra_compile_args = ['-mmacosx-version-min=10.9']
-    platform_extra_link_args = ['-Lextlib', '-liconv', '-Wl,-exported_symbols_list,regina_symbols']
+    platform_extra_link_args = ['-Lextlib', '-liconv', '-Wl,-exported_symbols_list,exported_symbols']
 elif sys.platform.startswith('linux'):
     platform_extra_link_args = ['-s']
 
