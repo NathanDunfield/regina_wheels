@@ -1,8 +1,6 @@
 /* config.h.  Generated from config.h.in by configure.  */
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
-#define LZMA_OK 0
-
 /* Type cast for the gethostbyname() argument */
 #define GETHOSTBYNAME_ARG_CAST /**/
 
@@ -91,10 +89,10 @@
 /* #undef HAVE_LIBHISTORY */
 
 /* Have compression library */
-#define HAVE_LIBLZMA 0
+/* #undef HAVE_LIBLZMA */
 
 /* Define if pthread library is there (-lpthread) */
-/* #undef HAVE_LIBPTHREAD */
+#define HAVE_LIBPTHREAD /**/
 
 /* Define if readline library is there (-lreadline) */
 /* #undef HAVE_LIBREADLINE */
@@ -150,7 +148,7 @@
 #define HAVE_PRINTF 1
 
 /* Define if <pthread.h> is there */
-/* #undef HAVE_PTHREAD_H */
+#define HAVE_PTHREAD_H /**/
 
 /* Define to 1 if you have the `putenv' function. */
 #define HAVE_PUTENV 1
