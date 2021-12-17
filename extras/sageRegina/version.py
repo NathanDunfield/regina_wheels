@@ -1,5 +1,5 @@
-version = '6.1.0a3'
-release_date = 'November 2021'
+version = '7.0rc0'
+release_date = 'December 2021'
 
 
 
