@@ -1,3 +1,23 @@
+diff --git a/engine/utilities/intutils.h b/engine/utilities/intutils.h
+index e4463fc40..14a70ac15 100644
+--- a/engine/utilities/intutils.h
++++ b/engine/utilities/intutils.h
+@@ -283,6 +283,14 @@ struct IntOfSize<8> {
+     using utype = uint64_t;
+ };
+ 
++#if ULONG_MAX > 4294967295
++#if __GNUC__
++#define INTERNAL___INT128_T_FOUND
++#else
++#define INTERNAL___INT128_FOUND
++#endif
++#endif
++
+ #if defined(INTERNAL___INT128_FOUND)
+     #define INT128_AVAILABLE
+     template <>
+
 diff --git a/python/regina/__init__.py b/python/regina/__init__.py
 index 272c4b8d3..6e9c5dc9f 100644
 --- a/python/regina/__init__.py
