@@ -112,6 +112,21 @@ libraries = [
     ('libxml_regina', libxml_library)
 ]
 
+def check_dimension(file_name):
+    """
+    Returns false for files such as "Foo9.cpp" or "Foo10.cpp", ...
+    
+    Used to compile regina without high-dimension support
+    (>8 dimensions).
+    """
+
+    dim_match = re.search(r'(\d+)\.', file_name)
+    if not dim_match:
+        return True
+    dim = int(dim_match.group(1))
+    return dim <= 8
+
+
 def regina_predicate(file_path):
     library_path, file_name = os.path.split(file_path)
     library_name = os.path.basename(library_path)
@@ -141,14 +156,7 @@ def regina_predicate(file_path):
         # Stuff that is no longer supported and needs to be reimplemented.
         return False
 
-    # Compile regina without high-dim support (>8 dimensions)
-    # That is, drop files such as Foo9.cpp or Foo10.cpp.
-    dim_match = re.search(r'(\d+)\.', file_name)
-    if dim_match:
-        dim = int(dim_match.group(1))
-        return dim <= 8
-
-    return True
+    return check_dimension(file_name)
 
 def regina_python_predicate(file_path):
     library_path, file_name = os.path.split(file_path)
@@ -156,7 +164,7 @@ def regina_python_predicate(file_path):
     if file_name == 'registerIntFromPyIndex.cpp':
         return False
 
-    return True
+    return check_dimension(file_name)
 
 def library_include_dirs(libraries):
     return sum(
