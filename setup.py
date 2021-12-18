@@ -137,6 +137,10 @@ def regina_predicate(file_path):
         
         return not ('nmz_' in file_name_base)
 
+    if library_name == 'tons':
+        # Stuff that is no longer supported and needs to be reimplemented.
+        return False
+
     # Compile regina without high-dim support (>8 dimensions)
     # That is, drop files such as Foo9.cpp or Foo10.cpp.
     dim_match = re.search(r'(\d+)\.', file_name)
