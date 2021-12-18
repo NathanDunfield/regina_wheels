@@ -26,7 +26,7 @@
 exec(open('extras/sageRegina/version.py').read())
 exec(open('extras/sageRegina/config.py').read())
 
-import glob, os, sys
+import glob, os, sys, re
 
 # Some of this is copied from SnapPy
 
@@ -136,6 +136,13 @@ def regina_predicate(file_path):
         file_name_base, ext = os.path.splitext(file_name)
         
         return not ('nmz_' in file_name_base)
+
+    # Compile regina without high-dim support (>8 dimensions)
+    # That is, drop files such as Foo9.cpp or Foo10.cpp.
+    dim_match = re.search(r'(\d+)\.', file_name)
+    if dim_match:
+        dim = int(dim_match.group(1))
+        return dim <= 8
 
     return True
 
