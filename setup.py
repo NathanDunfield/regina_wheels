@@ -120,6 +120,10 @@ def check_dimension(file_name):
     (>8 dimensions).
     """
 
+    if 'base64' in file_name:
+        # Special case: base64.cpp
+        return True
+
     dim_match = re.search(r'(\d+)\.', file_name)
     if not dim_match:
         return True
