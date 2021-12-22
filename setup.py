@@ -75,7 +75,7 @@ def tokyocabinet_predicate(file_path):
 platform_extra_compile_args = []
 platform_extra_link_args = []
 if sys.platform == 'darwin':
-    platform_extra_compile_args = ['-mmacosx-version-min=10.14']
+    platform_extra_compile_args = ['-mmacosx-version-min=10.15']
     platform_extra_link_args = ['-Lextlib', '-liconv', '-Wl,-exported_symbols_list,exported_symbols']
 elif sys.platform.startswith('linux'):
     platform_extra_link_args = ['-s']
