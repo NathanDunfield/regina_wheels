@@ -1,4 +1,4 @@
-version = '7.0rc0'
+version = '7.0.0'
 release_date = 'December 2021'
 
 
