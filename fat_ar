@@ -1,0 +1,6 @@
+#!/usr/bin/env python3.10
+import sys
+from subprocess import run
+assert sys.argv[1] == 'rcs'
+command = ['/usr/bin/libtool', '-c', '-s', '-o'] + sys.argv[2:]
+run(command)

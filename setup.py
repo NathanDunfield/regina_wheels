@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # A packaging of Regina that allows easy installation using python's pip, see
 # http://sageRegina.unhyperbolic.org/ for more information.
@@ -22,12 +22,23 @@
 # '::max_align_t' has not been declared
 # see https://gcc.gnu.org/gcc-4.9/porting_to.html
 
-# Get version from version.py
+# Get version from version.py and regina_dir from config.py,
+# among other things.
 exec(open('extras/sageRegina/version.py').read())
 exec(open('extras/sageRegina/config.py').read())
 
 import glob, os, sys, re
 
+# Add an option which allows creating a wheel without rebuilding all of regina,
+# for example after changing load paths in the regina library..
+if '--skip_build' in sys.argv:
+    skip_build = True
+    sys.argv.remove('--skip_build')
+
+    # We can only build regina for macOS 10.15 and newer
+if sys.platform == 'darwin':
+    os.environ['_PYTHON_HOST_PLATFORM'] = 'macosx-10.15-Universal2'
+    
 # Some of this is copied from SnapPy
 
 # Without the next line, we get an error even though we never
@@ -42,7 +53,7 @@ def recursive_glob(path, extension, depth = 0, predicate = None):
     """
     Find all files with the given extension under path up until
     the given depth (defaults to 0). If predicate is given, filter out
-    results for which prediate returns False.
+    results for which predicate returns False.
     """
 
     result = []
@@ -76,7 +87,8 @@ platform_extra_compile_args = []
 platform_extra_link_args = []
 if sys.platform == 'darwin':
     platform_extra_compile_args = ['-mmacosx-version-min=10.15']
-    platform_extra_link_args = ['-Lextlib', '-liconv', '-Wl,-exported_symbols_list,exported_symbols']
+    platform_extra_link_args = ['-Lextlib', '-liconv',
+                                '-Wl,-exported_symbols_list,exported_symbols']
 elif sys.platform.startswith('linux'):
     platform_extra_link_args = ['-s']
 
@@ -192,7 +204,7 @@ regina_extension = Extension(
             'extinclude',
         ] + library_include_dirs(libraries),
     language = 'c++',
-    extra_compile_args=['-fpermissive', '-std=c++17']  + platform_extra_compile_args,
+    extra_compile_args=(['-fpermissive', '-std=c++17'] + platform_extra_compile_args),
     libraries = ['gmp','gmpxx','m', 'bz2'],
     library_dirs = ['extlib'],
 
@@ -401,7 +413,49 @@ class package(CompoundCommand):
         'package_tar'
         ]
 
+from distutils.command.build import build
+
+class ReginaBuild(build):
+    def run(self):
+        build.run(self)
+        if sys.platform == 'darwin':
+            # On macOS we need to copy the gmp libraries into the package and
+            # set the load paths in the regina library to @loader_path/<library name>
+            # We assume that the fat gmp libraries reside in the extlib directory.
+            # The delocate package can handle this for an intel build, and cibuildwheel
+            # apparently does that, but our CI runners do not provide fat versions
+            # of the gmp libraries and currently there still are no arm CI runners.
+            regina_pkg_dir = os.path.join(self.build_lib, 'regina')
+            gmplibs = glob.glob('extlib/libgmp*.*.dylib')
+            engine = glob.glob(os.path.join(regina_pkg_dir, 'engine*'))[0]
+            # Copy libraries into the package
+            for lib in gmplibs:
+                print(['cp', lib, regina_pkg_dir])
+            # Fix up the load paths.
+            for lib in gmplibs:
+                oldlib = os.path.join('@rpath', os.path.basename(lib))
+                newlib = os.path.join('@loader_path', os.path.basename(lib))
+                print(['macher', 'edit_libpath', oldlib, newlib, engine])
+            # Re-sign the regina library, since changing the load paths breaks the
+            # signature.  This can be done with a self-signed certificate, but must
+            # be done for arm_64 libraries.
+            with open('DEV_ID') as id_file:
+                DEV_ID = id_file.read().strip()
+            print(['codesign', '-v', '-s', DEV_ID, '--timestamp', '--options',
+                   'runtime', '--entitlements', 'entitlement.plist', '--force',
+                   os.path.join(regina_pkg_dir, engine)])
+        # On linux, this is presumably handled by cibuildwheel.
+
+from wheel.bdist_wheel import bdist_wheel
+
+class ReginaBuildWheel(bdist_wheel):
+    def run(self):
+        self.skip_build = skip_build
+        bdist_wheel.run(self)
+            
 cmdclass = {
+    'build' : ReginaBuild,
+    'bdist_wheel' : ReginaBuildWheel,
     'package_download_tokyocabinet' : package_download_tokyocabinet,
     'package_download_libxml' : package_download_libxml,
     'package_download' : package_download,
@@ -424,8 +478,7 @@ cmdclass = {
     'package_assemble' : package_assemble,
     'package_tar' : package_tar,
     'package' : package}
-
-
+    
 setup(name = 'regina',
       version = version,
       zip_safe = False,
@@ -465,7 +518,7 @@ setup(name = 'regina',
       },
       package_data = {
           'regina/sageRegina/testsuite' : ['*.*'],
-          'regina/pyCensus' : ['*.tdb']
+          'regina/pyCensus' : ['*.tdb'],
       },
       ext_modules = [ regina_extension ],
       libraries = libraries,
