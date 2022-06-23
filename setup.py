@@ -27,7 +27,7 @@
 exec(open('extras/sageRegina/version.py').read())
 exec(open('extras/sageRegina/config.py').read())
 
-import glob, os, sys, re
+import glob, os, sys, re, platform, subprocess
 
 # Add an option which allows creating a wheel without rebuilding all of regina,
 # for example after changing load paths in the regina library..
@@ -38,7 +38,9 @@ if '--skip_build' in sys.argv:
 
     # We can only build regina for macOS 10.15 and newer
 if sys.platform == 'darwin':
-    os.environ['_PYTHON_HOST_PLATFORM'] = 'macosx-10.15-Universal2'
+    arch = platform.machine()
+    os.environ['_PYTHON_HOST_PLATFORM'] = 'macosx-10.15-%s'%arch
+    os.environ['ARCHFLAGS']='-arch %s'%arch
     
 # Some of this is copied from SnapPy
 
@@ -419,7 +421,7 @@ from distutils.command.build import build
 class ReginaBuild(build):
     def run(self):
         build.run(self)
-        if sys.platform == 'darwin':
+        if sys.platform == 'darwin' and arch == 'arm64':
             # On macOS we need to copy the gmp libraries into the package and
             # set the load paths in the regina library to @loader_path/<library name>
             # We assume that the fat gmp libraries reside in the extlib directory.
@@ -431,20 +433,23 @@ class ReginaBuild(build):
             engine = glob.glob(os.path.join(regina_pkg_dir, 'engine*'))[0]
             # Copy libraries into the package
             for lib in gmplibs:
-                print(['cp', lib, regina_pkg_dir])
+                subprocess.run(['cp', lib, regina_pkg_dir])
             # Fix up the load paths.
             for lib in gmplibs:
                 oldlib = os.path.join('@rpath', os.path.basename(lib))
                 newlib = os.path.join('@loader_path', os.path.basename(lib))
-                print(['macher', 'edit_libpath', oldlib, newlib, engine])
+                subprocess.run(['install_name_tool', '-change', oldlib, newlib, engine])
             # Re-sign the regina library, since changing the load paths breaks the
             # signature.  This can be done with a self-signed certificate, but must
             # be done for arm_64 libraries.
-            with open('DEV_ID') as id_file:
-                DEV_ID = id_file.read().strip()
-            print(['codesign', '-v', '-s', DEV_ID, '--timestamp', '--options',
-                   'runtime', '--entitlements', 'entitlement.plist', '--force',
-                   os.path.join(regina_pkg_dir, engine)])
+            try:
+                with open('DEV_ID') as id_file:
+                    DEV_ID = id_file.read().strip()
+                    subprocess.run(['codesign', '-v', '-s', DEV_ID, '--timestamp',
+                    '--options', 'runtime', '--entitlements', 'entitlement.plist',
+                    '--force', os.path.join(regina_pkg_dir, engine)])
+            except:
+                pass
         # On linux, this is presumably handled by cibuildwheel.
 
 from wheel.bdist_wheel import bdist_wheel
