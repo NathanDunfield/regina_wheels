@@ -447,9 +447,16 @@ class ReginaBuild(build):
                    os.path.join(regina_pkg_dir, engine)])
         # On linux, this is presumably handled by cibuildwheel.
 
+from wheel.bdist_wheel import bdist_wheel
+
+class ReginaBuildWheel(bdist_wheel):
+    def run(self):
+        self.skip_build = skip_build
+        bdist_wheel.run(self)
 
 cmdclass = {
     'build' : ReginaBuild,
+    'bdist_wheel': ReginaBuildWheel,
     'package_download_tokyocabinet' : package_download_tokyocabinet,
     'package_download_libxml' : package_download_libxml,
     'package_download' : package_download,
@@ -472,18 +479,6 @@ cmdclass = {
     'package_assemble' : package_assemble,
     'package_tar' : package_tar,
     'package' : package}
-
-try:
-    from wheel.bdist_wheel import bdist_wheel
-
-    class ReginaBuildWheel(bdist_wheel):
-        def run(self):
-            self.skip_build = skip_build
-            bdist_wheel.run(self)
-
-    cmdclass['bdist_wheel'] = ReginaBuildWheel
-except:
-    pass
 
 setup(name = 'regina',
       version = version,
