@@ -31,6 +31,7 @@ import glob, os, sys, re
 
 # Add an option which allows creating a wheel without rebuilding all of regina,
 # for example after changing load paths in the regina library..
+skip_build = False
 if '--skip_build' in sys.argv:
     skip_build = True
     sys.argv.remove('--skip_build')
