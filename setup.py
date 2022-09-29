@@ -288,6 +288,47 @@ class CompoundCommand(Command):
         for cmd in self.commands:
             self.run_command(cmd)
 
+class package_fix_version_regina_config(Command):
+    user_options = []
+    def initialize_options(self):
+        pass
+    def finalize_options(self):
+        pass
+    def run(self):
+        version_parts = version.split('.')
+        major_version = version_parts[0]
+        minor_version = version_parts[1]
+        major_minor_version = major_version + "." + minor_version
+        # Ignoring patch version
+
+        replace_patterns = (
+            ( '#define PACKAGE_STRING ',
+              '"Regina %s"' % major_minor_version),
+            ( '#define PACKAGE_VERSION ',
+              '"%s"' % major_minor_version),
+            ( '#define PACKAGE_VERSION_MAJOR ',
+              '%s' % major_version),
+            ( '#define PACKAGE_VERSION_MINOR ',
+              '%s' % minor_version))
+
+        config_file = regina_dir + '/engine/regina-config.h'
+
+        with open(config_file, 'r') as f:
+            lines = f.read().split('\n')
+        matches = 0
+        for i in range(len(lines)):
+            for prefix, value in replace_patterns:
+                if lines[i].startswith(prefix):
+                    lines[i] = prefix + ' ' + value
+                    matches += 1
+        if matches != len(replace_patterns):
+            raise Exception(
+                "Patching version numbers in %s failed, "
+                "expected %d matches, got %d." % (
+                    config_file, matches, len(replace_patterns)))
+        with open(config_file, 'w') as f:
+            f.write('\n'.join(lines))
+
 class package_download_tokyocabinet(SystemCommand):
     system_commands = ['cd /tmp; curl -O %s' % tokyocabinet_uri]
 
@@ -385,6 +426,7 @@ class package_assemble(CompoundCommand):
     commands = [
         'package_retrieve',
         'package_extras',
+        'package_fix_version_regina_config',
         'package_info'
         ]
 
@@ -481,6 +523,7 @@ cmdclass = {
     'package_extras' : package_extras,
     'package_move_info' : package_move_info,
     'package_info' : package_info,
+    'package_fix_version_regina_config' : package_fix_version_regina_config,
     'package_assemble' : package_assemble,
     'package_tar' : package_tar,
     'package' : package}
