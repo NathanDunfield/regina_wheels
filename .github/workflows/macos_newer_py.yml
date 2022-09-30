@@ -30,7 +30,7 @@ jobs:
         run: |
           python -m cibuildwheel --output-dir wheelhouse
         env:
-          CIBW_BUILD: cp39-macosx_x86_64 cp310-macosx_x86_64 cp311-macosx_x86_64
+          CIBW_BUILD: cp39-macosx_x86_64 cp310-macosx_x86_64
           # gmp already installed on macos runner
           CIBW_BEFORE_ALL_MACOS: python setup.py package_assemble
           CIBW_TEST_COMMAND: python -m regina.test
