@@ -4,6 +4,6 @@ tokyocabinet_dir  = 'tokyocabinet-1.4.48'
 libxml_uri        = 'http://sageRegina.unhyperbolic.org/sources/libxml2-2.9.3.tar.gz'
 libxml_dir        = 'libxml2-2.9.3'
 
-regina_hash      = 'e1eb2ad907c805d'  # service-7.1 (~version 7.1 with pybind11 to 2.10)
+regina_hash      = 'd2736106cbbe25f317'  # 7.2 release candidate
 regina_uri       = 'https://github.com/regina-normal/regina.git'
 regina_dir       = 'regina_%s' % regina_hash
