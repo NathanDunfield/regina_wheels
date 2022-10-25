@@ -10,12 +10,7 @@ import os
 import glob
 import difflib
 import traceback
-try:
-    # Python 3
-    from io import StringIO
-except:
-    # Python 2
-    from StringIO import StringIO
+from io import StringIO
 
 base_path = os.path.split(__file__)[0]
 testsuite_path = os.path.join(base_path, 'testsuite')
@@ -76,6 +71,12 @@ def runTest(testName, testFile):
         # <boost.python.function at 0x34534345345>
         output   = '\n'.join(  output.split('\n')[:-2])
         baseline = '\n'.join(baseline.split('\n')[:-2])
+
+    if testName == 'docstring':
+        output = re.subn(r'(\s*)__pybind11_module_local_([a-zA-Z0-9_-]+) = <capsule.*\.\.\.',
+                         r'\1__pybind11_module_local__ = ...', output)[0]
+        output = re.subn(r'(\s*)Methods( inherited from pybind11_object:)',
+                         r'\1Static methods\2', output)[0]
                            
     if output != baseline:
         failed += "Difference between baseline and output:\n"
