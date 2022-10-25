@@ -46,16 +46,16 @@
 #define PACKAGE_BUGREPORT "regina-user@lists.sourceforge.net"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "Regina 7.1"
+#define PACKAGE_STRING "Regina 7.2"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "7.1"
+#define PACKAGE_VERSION "7.2"
 
 /* Major version number of the package. */
 #define PACKAGE_VERSION_MAJOR 7
 
 /* Minor version number of the package. */
-#define PACKAGE_VERSION_MINOR 1
+#define PACKAGE_VERSION_MINOR 2
 
 /* Define to the version of SnapPy that is bundled with Regina. */
 #define SNAPPY_VERSION "2.4"
@@ -63,3 +63,10 @@
 /* Define if we implement key-value stores using Tokyo Cabinet.
    Exactly one of these REGINA_KVSTORE_* macros should be defined. */
 #define REGINA_KVSTORE_TOKYOCABINET
+
+/* Optional additional information about this specific build.
+  This will always be defined, but it may be the empty string. */
+#define BUILD_INFO "Self-contained Python wheel"
+
+/* A nicely formatted combination of PACKAGE_STRING and BUILD_INFO. */
+#define PACKAGE_BUILD_STRING "Regina 7.2 (self-contained Python wheel)"
