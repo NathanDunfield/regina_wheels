@@ -1,4 +1,4 @@
-name: macOS with 3.9 and 3.10
+name: macOS with 3.9-3.11
 
 on: [push, pull_request]
 
