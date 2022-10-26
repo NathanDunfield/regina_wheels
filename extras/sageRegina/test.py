@@ -7,6 +7,7 @@ from . version import version
 
 import sys
 import os
+import re
 import glob
 import difflib
 import traceback
