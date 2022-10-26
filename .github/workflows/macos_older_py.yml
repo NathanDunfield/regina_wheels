@@ -11,30 +11,15 @@ jobs:
         os: [macos-latest]
 
     steps:
-      - uses: actions/checkout@v2
-
-      - uses: actions/setup-python@v2
-        name: Install Python
-        with:
-          python-version: '3.8'
-
-      - name: Install wheel
-        run: |
-          python -m pip install wheel
-
-      - name: Install cibuildwheel
-        run: |
-          python -m pip install cibuildwheel
+      - uses: actions/checkout@v3
 
       - name: Build wheels
-        run: |
-          python -m cibuildwheel --output-dir wheelhouse
-        env:
+        uses: pypa/cibuildwheel@v2
           CIBW_BUILD: cp36-macosx_x86_64 cp37-macosx_x86_64 cp38-macosx_x86_64
           # gmp already installed on macos runner
           CIBW_BEFORE_ALL_MACOS: python setup.py package_assemble
           CIBW_TEST_COMMAND: python -m regina.test
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           path: ./wheelhouse/*.whl
