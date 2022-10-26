@@ -72,7 +72,7 @@ def runTest(testName, testFile):
         output   = '\n'.join(  output.split('\n')[:-2])
         baseline = '\n'.join(baseline.split('\n')[:-2])
 
-    if testName == 'docstring':
+    if testName == 'docstrings':
         output = re.subn(r'(\s*)__pybind11_module_local_([a-zA-Z0-9_-]+) = <capsule.*\.\.\.',
                          r'\1__pybind11_module_local__ = ...', output)[0]
         output = re.subn(r'(\s*)Methods( inherited from pybind11_object:)',
