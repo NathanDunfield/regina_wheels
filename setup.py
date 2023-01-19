@@ -86,7 +86,7 @@ def tokyocabinet_predicate(file_path):
 
     return not (file_name in files_with_main)
 
-platform_extra_compile_args = []
+platform_extra_compile_args = ['-O3']
 platform_extra_link_args = []
 if sys.platform == 'darwin':
     platform_extra_compile_args = ['-mmacosx-version-min=10.15']
