@@ -12,7 +12,7 @@ The current version is somewhat experimental and is based on a
 pre-release version of Regina; it is offered for macOS (10.14 and
 newer) and Linux, but not Windows. To try it out, do::
 
-  python3 -m pip install --user --pre --only-binary :all: -U regina
+  python3 -m pip install --user --upgrade "regina>=7.0"
   python3 -m regina.test
 
 On older versions of Linux, e.g. Ubuntu 18.04, you may need to update
@@ -29,13 +29,13 @@ itself. This project evolved out of Goerner's `sageRegina`_
 but works both with and without `SageMath`_. To install and test in
 SageMath do the following in a terminal window::
 
-  sage -pip install --user --pre --only-binary :all: -U regina
+  sage -pip install --user --upgrade "regina>=7.0"
   sage -python -m regina.test
 
 One can also do this from **inside** SageMath (including from a
 notebook) by::
 
-  sage: %pip install --user --pre --only-binary :all: -U regina
+  sage: %pip install --user "regina>=7.0"
   sage: import regina.test; regina.test.runTests()
 
 Please report any technical problems via the `issue tracker`_ on the
@@ -47,10 +47,13 @@ Building from source
 
 If the available binaries do not work for you, you can try building
 from source.  You will need have the development versions of the
-libraries gmp, zlib, and bzip2 installed (which should be the case if
-using Sage)::
+libraries gmp, zlib, and bzip2 installed::
 
-  python3 -m pip install --user --pre --no-binary :all: -U -v regina
+  git clone https://github.com/3-manifolds/regina_wheel
+  cd regina_wheel
+  python3 setup.py package_assemble
+  python3 setup.py bdist_wheel
+  python3 -m pip install dist/regina*.whl
 
 This can easily take an hour or more.
 
