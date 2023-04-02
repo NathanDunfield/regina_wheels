@@ -1,0 +1,20 @@
+--- a/python/regina/__init__.py
++++ b/python/regina/__init__.py
+@@ -65,6 +65,17 @@ else:
+           if name != 'open' and not name.startswith('_') ] +
+         [ 'reginaSetup' ])
+ 
++# In sageRegina, the census files are supplied differently.
++# Set the location here.
++try:
++    from .pyCensus import __path__ as _pyCensusPath
++    GlobalDirs.setDirs(
++        GlobalDirs.home(),
++        GlobalDirs.pythonModule(),
++        _pyCensusPath[0])
++except ImportError:
++    pass
++
+ def reginaSetup(quiet = False, readline = True, banner = False,
+                 snappyPath = True, namespace = None, builtinOpen = True):
+     """

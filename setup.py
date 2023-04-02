@@ -372,7 +372,9 @@ class package_checkout_regina(SystemCommand):
 
 class package_patch_regina(SystemCommand):
     system_commands = [
-        'cd regina_*; cp preconfig/pypi/regina-config.h engine/']
+        'cd regina_*; cp preconfig/pypi/regina-config.h engine/',
+        'git apply ../patches/regina.diff'
+        ]
 
 class package_retrieve_tokyocabinet(CompoundCommand):
     commands = [
