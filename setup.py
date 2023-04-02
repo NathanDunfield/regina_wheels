@@ -321,6 +321,8 @@ class package_fix_version_regina_config(Command):
                 if lines[i].startswith(prefix):
                     lines[i] = prefix + ' ' + value
                     matches += 1
+            if lines[i].startswith('#define REGINA_INSTALL_XDG'):
+                lines[i] = ''
         if matches != len(replace_patterns):
             raise Exception(
                 "Patching version numbers in %s failed, "
